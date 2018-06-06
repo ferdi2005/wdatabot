@@ -11,7 +11,7 @@ require 'json'
 ## CONFIGURATION START ##
 token = 'INSERT_BOT_TOKEN_HERE' # Telegram bot API token
 # api_ep = 'https://wikigram.it/api.php' # Wikigram Api Sample
-api_ep = 'https://it.wiktionary.org/w/api.php'# Mediawiki API endpoint
+api_ep = 'https://wikidata.org/w/api.php'# Mediawiki API endpoint
 # page_uri = "#{api_ep[0..-8]}/" # Example: URL pattern for Wikipedia
 page_uri = "#{api_ep[0..-10]}wiki/" # Base URL for pages
 ## CONFIGURATION END ##
@@ -37,7 +37,7 @@ Telegram::Bot::Client.run(token) do |bot|
         if query_search.data["searchinfo"]["totalhits"] == 0 then
           results << Telegram::Bot::Types::InlineQueryResultArticle.new(
             id: 1,
-            title: "Nessun risultato presente.",
+            title: "There isn't any result. Please retry.",
             input_message_content: Telegram::Bot::Types::InputTextMessageContent.new(message_text: "Ci dispiace, non ci sono voci con questo titolo Prova a chiedere su @itwikipedia")
           )
         end
@@ -58,7 +58,7 @@ Telegram::Bot::Client.run(token) do |bot|
               description: "#{page["extract"][0..64]}...",
               reply_markup: Telegram::Bot::Types::InlineKeyboardMarkup.new(
                 inline_keyboard: [Telegram::Bot::Types::InlineKeyboardButton.new(
-                  text: "Leggi ora la definizione", url: "#{page_uri}#{norm_title}"
+                 url: "#{page_uri}#{norm_title}"
                 )]
               )
             )
